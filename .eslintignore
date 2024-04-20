@@ -1,0 +1,10 @@
+next-env.d.ts
+next.config.js
+postcss.config.js
+README.md
+node_modules
+public
+.gitignore
+.next
+.dist
+.build
