@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { user$ } from '@/store/auth.store'
 import Footer from '@/components/footer/footer'
 import { useSession } from 'next-auth/react'
+import Sidebar from '@/components/sidebar/sidebar'
 
 export default function ConsoleLayout({
 	children,
@@ -17,15 +18,20 @@ export default function ConsoleLayout({
 		if (status === 'loading') {
 			setIsLoading(true)
 		} else {
+			if (status === 'authenticated') {
+				if (data.user) {
+					user$.next(data.user)
+				}
+			}
 			setIsLoading(false)
 		}
-	}, [status])
+	}, [status, data])
 
 	return isLoading ? (
 		<p>loading..</p>
 	) : (
 		<>
-			<div>Sidebar</div>
+			<Sidebar />
 			{children}
 			<Footer />
 		</>
