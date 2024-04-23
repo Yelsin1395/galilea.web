@@ -10,6 +10,7 @@
 		"format:fix": "npx eslint --fix ./{app,providers,actions,components,hooks,interfaces,common,configs}/**/*.{ts,tsx}"
 	},
 	"dependencies": {
+		"@supabase/supabase-js": "^2.42.5",
 		"bulma": "^1.0.0",
 		"keen-slider": "^6.8.6",
 		"next": "14.2.2",

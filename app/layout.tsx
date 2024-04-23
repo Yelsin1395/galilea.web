@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
+import { ToasterProvider } from '@/providers/toasterProvider'
+import { NextAuthProvider } from '@/providers/NextAuthProvider'
 import '@/scss/global.scss'
 
 const nunito = Nunito({ subsets: ['latin'] })
@@ -16,7 +18,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={nunito.className}>{children}</body>
+			<body className={nunito.className}>
+				<ToasterProvider />
+				<NextAuthProvider>{children}</NextAuthProvider>
+			</body>
 		</html>
 	)
 }

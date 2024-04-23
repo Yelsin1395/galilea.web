@@ -1,9 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import navLinks from './navLinks'
+import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
 	const [isActive, setIsActive] = useState(false)
+	const pathName = usePathname()
+
+	function comparePathComplete(pathName: string, href: string) {
+		return pathName.includes(href) && pathName.length === href.length
+	}
 
 	return (
 		<nav className='navbar' role='navigation' aria-label='main navigation'>
@@ -49,17 +57,27 @@ export default function Navbar() {
 
 			<div id='navbarBasicExample' className={isActive ? 'navbar-menu is-active' : 'navbar-menu'}>
 				<div className='navbar-start'>
-					<a className='navbar-item' href='/console/products'>
-						Productos
-					</a>
+					{navLinks.map((link) => {
+						const isActive = comparePathComplete(pathName, link.href)
+
+						return (
+							<Link
+								key={link.name}
+								className={isActive ? 'navbar-item is-active' : 'navbar-item'}
+								href={link.href}
+							>
+								{link.name}
+							</Link>
+						)
+					})}
 				</div>
 
 				<div className='navbar-end'>
 					<div className='navbar-item'>
 						<div className='buttons'>
-							<button className='button is-link'>
+							<Link className='button is-link' href='/auth/login'>
 								<strong>Consola</strong>
-							</button>
+							</Link>
 						</div>
 					</div>
 				</div>
