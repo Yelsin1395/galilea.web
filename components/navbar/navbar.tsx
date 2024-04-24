@@ -2,16 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import navLinks from './navLinks'
 import { usePathname } from 'next/navigation'
+import navLinks from './navLinks'
+import { comparePathComplete } from '@/common/helpers'
 
 export default function Navbar() {
 	const [isActive, setIsActive] = useState(false)
 	const pathName = usePathname()
-
-	function comparePathComplete(pathName: string, href: string) {
-		return pathName.includes(href) && pathName.length === href.length
-	}
 
 	return (
 		<nav className='navbar' role='navigation' aria-label='main navigation'>

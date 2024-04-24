@@ -1,6 +1,5 @@
 import { type Observable } from 'rxjs'
 import { fromFetch } from 'rxjs/fetch'
-import { cfg } from '@/configs/environment'
 
 interface ApiProviderImpl {
 	get: (url: string, headers?: Record<string, string>) => Observable<Response>
@@ -11,7 +10,7 @@ interface ApiProviderImpl {
 }
 
 class ApiProvider implements ApiProviderImpl {
-	constructor(public baseUrl: string = cfg.NEXT_PUBLIC_BASE_URL as string) {}
+	constructor(public baseUrl: string) {}
 
 	private readonly isAbsoluteUrl = (url: string): boolean => {
 		const path = /^https?:\/\//i
@@ -79,4 +78,4 @@ class ApiProvider implements ApiProviderImpl {
 	}
 }
 
-export const http = new ApiProvider()
+export default ApiProvider

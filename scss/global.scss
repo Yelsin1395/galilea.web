@@ -2,6 +2,6 @@
 $red: #d62739;
 
 // Path to Bulma's sass folder
-@use "bulma/sass" with (
-  $primary: $red
+@use 'bulma/sass' with (
+	$primary: $red
 );
