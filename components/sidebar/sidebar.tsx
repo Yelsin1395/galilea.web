@@ -83,13 +83,10 @@ export default function Sidebar() {
 					<button className='delete' onClick={() => setActiveSidebar(false)}></button>
 				</div>
 				<aside className='menu'>
-					<p className='menu-label'>Usuario</p>
+					<p className='menu-label'>General</p>
 					<ul className='menu-list'>
 						<li>
 							<Link href='/console'>Inicio</Link>
-						</li>
-						<li>
-							<a>{email}</a>
 						</li>
 					</ul>
 

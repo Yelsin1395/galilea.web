@@ -5,6 +5,7 @@ import { user$ } from '@/store/auth.store'
 import Footer from '@/components/footer/footer'
 import { useSession } from 'next-auth/react'
 import Sidebar from '@/components/sidebar/sidebar'
+import { LoadingFullPage } from '@/components/loading/loading'
 
 export default function ConsoleLayout({
 	children,
@@ -28,7 +29,7 @@ export default function ConsoleLayout({
 	}, [status, data])
 
 	return isLoading ? (
-		<p>loading..</p>
+		<LoadingFullPage />
 	) : (
 		<>
 			<Sidebar />

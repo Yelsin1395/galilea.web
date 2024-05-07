@@ -1,11 +1,15 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { BeatLoader } from 'react-spinners'
 import toast from 'react-hot-toast'
+import { LoadingGrid } from '@/components/loading/loading'
+import ModalCard from '@/components/modalCard/modalCard'
 import { VisitHistorie, search } from '@/services/visitHistories.service'
+import CreateVisit from './createVisit'
+import { datetime } from '@/common/helpers'
 
 export default function Visits() {
+	const [showModal, setShowModal] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState(true)
 	const [visitHistories, setVisitHistories] = useState<VisitHistorie[]>([])
 	const columns = ['Tipo', 'Placa', 'Entrada', 'Salida', 'Acciones']
@@ -36,14 +40,18 @@ export default function Visits() {
 
 	return (
 		<section className='section'>
+			<ModalCard title='Registar visita' isActive={showModal} onClose={() => setShowModal(false)}>
+				<CreateVisit />
+			</ModalCard>
+
 			<section className='hero has-background-primary-light mb-4'>
 				<nav className='level'>
 					<div className='level-left'>
 						<div className='level-item'>
 							<div className='hero-body'>
-								<p className='title'>Visitas</p>
+								<p className='title'>Seguimiento de visitas</p>
 								<p className='subtitle is-size-7-mobile'>
-									Registro y control de visitas a las urbanización
+									Registro y control de visitas que acceden a la urbanización
 								</p>
 							</div>
 						</div>
@@ -52,7 +60,9 @@ export default function Visits() {
 					<div className='level-right'>
 						<div className='level-item'>
 							<div className='hero-body'>
-								<button className='button'>Registrar</button>
+								<button className='button' onClick={() => setShowModal(true)}>
+									Registrar
+								</button>
 							</div>
 						</div>
 					</div>
@@ -61,9 +71,7 @@ export default function Visits() {
 
 			<div className='box'>
 				{isLoading ? (
-					<div className='has-text-centered'>
-						<BeatLoader color='#d62739' />
-					</div>
+					<LoadingGrid />
 				) : (
 					<div className='table-container'>
 						<table className='table is-hoverable is-fullwidth'>
@@ -80,7 +88,7 @@ export default function Visits() {
 									<tr key={v.id}>
 										<td>{v.vehicleType}</td>
 										<td>{v.plateNumber}</td>
-										<td>{v.dateTimeEntry}</td>
+										<td>{datetime(v.dateTimeEntry)}</td>
 										<td>{v.dateTimeExit}</td>
 										<td>
 											<div className='buttons'>

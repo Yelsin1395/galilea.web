@@ -8,13 +8,14 @@ export interface VisitHistorie {
 	userId?: string
 	visitId?: string
 	dateTimeEntry: DateTime
-	dateTimeExit?: DateTime
+	dateTimeExit?: DateTime | null
 	vehicleType: string
-	plateNumber: string
+	plateNumber?: string | null
 	create_at?: string
 }
 
-export const search = async () => supabase.from(TABLE_NAME).select()
+export const search = async () =>
+	supabase.from(TABLE_NAME).select().order('dateTimeEntry', { ascending: false })
 
 export const getByVisitId = async (visitId: string) =>
 	supabase.from(TABLE_NAME).select('*').eq('visitId', visitId)

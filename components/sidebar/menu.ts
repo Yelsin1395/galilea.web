@@ -5,7 +5,13 @@ const menu = [
 	},
 	{
 		label: 'Seguridad',
-		children: [{ name: 'Visitas', href: '/console/visits', roles: ['ADMIN', 'VIGILANT'] }],
+		children: [
+			{
+				name: 'Seguimiento Visitas',
+				href: '/console/tracking-visits',
+				roles: ['ADMIN', 'VIGILANT'],
+			},
+		],
 	},
 ]
 
