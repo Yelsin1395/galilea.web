@@ -6,6 +6,7 @@ import { user$ } from '@/store/auth.store'
 import menu from './menu'
 import { comparePathComplete } from '@/common/helpers'
 import './sidebar.scss'
+import { cn } from '@/utils/merge'
 
 export default function Sidebar() {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -86,7 +87,15 @@ export default function Sidebar() {
 					<p className='menu-label'>General</p>
 					<ul className='menu-list'>
 						<li>
-							<Link href='/console'>Inicio</Link>
+							<Link
+								className={cn(
+									comparePathComplete(pathName, '/console') &&
+										'has-background-primary-light has-text-weight-bold'
+								)}
+								href='/console'
+							>
+								Inicio
+							</Link>
 						</li>
 					</ul>
 
@@ -97,11 +106,11 @@ export default function Sidebar() {
 								{m.children.map((c) => {
 									const isActive = comparePathComplete(pathName, c.href)
 									return (
-										<li key={c.name}>
+										<li key={c.name} onClick={() => setActiveSidebar(false)}>
 											<Link
-												className={
-													isActive ? 'has-background-primary-light has-text-weight-bold' : ''
-												}
+												className={cn(
+													isActive && 'has-background-primary-light has-text-weight-bold'
+												)}
 												href={c.href}
 											>
 												{c.name}

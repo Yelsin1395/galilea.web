@@ -3,19 +3,21 @@
 	height: 100vh;
 	position: absolute;
 	top: 0;
-	left: -999px;
 	z-index: 999;
 	overflow-y: scroll;
 	padding-top: 15px;
 	padding-left: 10px;
 	background: white;
+	transform: translateX(-280px);
+	transition: all 400ms linear;
 
 	.va-close-sidebar {
 		float: right;
-    padding-right: 15px;
+		padding-right: 15px;
 	}
 }
 
 .is-active-sidebar-menu {
-	left: 0;
+	transform: translateX(0);
+	transition: all 400ms linear;
 }

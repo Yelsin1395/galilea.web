@@ -1,8 +1,8 @@
 const menu = [
-	{
-		label: 'Administración',
-		children: [{ name: 'Moradores', href: '', roles: ['ADMIN'] }],
-	},
+	// {
+	// 	label: 'Administración',
+	// 	children: [{ name: 'Moradores', href: '', roles: ['ADMIN'] }],
+	// },
 	{
 		label: 'Seguridad',
 		children: [
