@@ -98,7 +98,12 @@ export default function Sidebar() {
 									const isActive = comparePathComplete(pathName, c.href)
 									return (
 										<li key={c.name}>
-											<Link className={isActive ? 'is-active' : ''} href={c.href}>
+											<Link
+												className={
+													isActive ? 'has-background-primary-light has-text-weight-bold' : ''
+												}
+												href={c.href}
+											>
 												{c.name}
 											</Link>
 										</li>
@@ -110,10 +115,13 @@ export default function Sidebar() {
 
 					<p className='menu-label'>Acciones</p>
 					<button
-						className={isLoading ? 'button is-link is-loading' : 'button is-link'}
+						className={
+							isLoading ? 'button is-link is-loading' : 'button is-link has-text-weight-bold'
+						}
 						onClick={onSignOut}
+						disabled={isLoading}
 					>
-						<strong>Cerrar Sesión</strong>
+						Cerrar Sesión
 					</button>
 				</aside>
 			</div>

@@ -54,7 +54,7 @@ export default function Login() {
 									administrador.
 								</p>
 								<hr />
-								<Link className='button is-info' href='/'>
+								<Link className='button' href='/'>
 									Ir a inicio
 								</Link>
 							</div>

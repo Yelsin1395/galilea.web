@@ -53,5 +53,16 @@ export function isEmptyString(str: string): boolean {
 }
 
 export function convertToUpperCase(str: string): string {
-  return str.toUpperCase();
+	return str.toUpperCase()
+}
+
+export function areAllFieldsFilled(obj: any): boolean {
+	for (var key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			if (!obj[key]) {
+				return false
+			}
+		}
+	}
+	return true
 }

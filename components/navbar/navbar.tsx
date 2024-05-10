@@ -60,7 +60,11 @@ export default function Navbar() {
 						return (
 							<Link
 								key={link.name}
-								className={isActive ? 'navbar-item is-active' : 'navbar-item'}
+								className={
+									isActive
+										? 'navbar-item has-background-danger-light has-text-weight-bold'
+										: 'navbar-item'
+								}
 								href={link.href}
 							>
 								{link.name}
@@ -72,8 +76,8 @@ export default function Navbar() {
 				<div className='navbar-end'>
 					<div className='navbar-item'>
 						<div className='buttons'>
-							<Link className='button is-link' href='/auth/login'>
-								<strong>Consola</strong>
+							<Link className='button is-primary has-text-weight-bold' href='/auth/login'>
+								Consola
 							</Link>
 						</div>
 					</div>

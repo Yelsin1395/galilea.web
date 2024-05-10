@@ -46,7 +46,7 @@ export default function Carousel() {
 				<div className='keen-slider__slide number-slide1'>
 					<Image
 						fill
-						src='https://res.cloudinary.com/dwvc88n4u/image/upload/v1713641951/vista-alegre/val-portada-banner-3933359_wnrgeo.png'
+						src='https://res.cloudinary.com/dwvc88n4u/image/upload/v1715301668/vista-alegre/cuadra-ibis-web_lirhem.png'
 						alt='port-vista'
 						priority
 						style={{ objectFit: 'cover' }}

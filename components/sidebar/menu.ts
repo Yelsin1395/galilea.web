@@ -1,7 +1,7 @@
 const menu = [
 	{
 		label: 'Administración',
-		children: [{ name: 'Moradores', href: '/console/inhabitants', roles: ['ADMIN'] }],
+		children: [{ name: 'Moradores', href: '', roles: ['ADMIN'] }],
 	},
 	{
 		label: 'Seguridad',

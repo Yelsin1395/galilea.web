@@ -1,5 +1,2 @@
-const navLinks = [
-	{ name: 'Inicio', href: '/' },
-	{ name: 'Productos', href: '/products' },
-]
+const navLinks = [{ name: 'Inicio', href: '/' }]
 export default navLinks

@@ -1,33 +1,38 @@
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { user$ } from '@/store/auth.store'
-import { getByDocument, create as createVisit } from '@/services/visit.service'
+import { getByDocument, create as createVisit, Visit } from '@/services/visit.service'
 import { create as createVisitHistories } from '@/services/visitHistories.service'
 import { getDni } from '@/services/apisperu.service'
-import { dateCurrentUTC, isEmptyString, convertToUpperCase } from '@/common/helpers'
+import {
+	dateCurrentUTC,
+	isEmptyString,
+	convertToUpperCase,
+	areAllFieldsFilled,
+} from '@/common/helpers'
 import { cn } from '@/utils/merge'
 
-type DataTypesFrom = {
+interface CreateVisitProps {
+	emitCloseModal: () => void
+}
+
+type InputsFrom = {
 	documentType: string
 	documentNumber: string
 	name: string
 	surname: string
 	vehicleType: string
-	plateNumber?: string
-	input: boolean
-	output?: boolean
+	plateNumber: string
 }
 
-export default function CreateVisit() {
+export default function CreateVisit({ emitCloseModal }: CreateVisitProps) {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [isLoadingSearch, setIsLoadingSearch] = useState<boolean>(false)
 	const [isShowFrom, setIsShowForm] = useState<boolean>(false)
-	const [visitId, setVisitId] = useState<string>('')
+	const [visit, setVisit] = useState<Visit | null>(null)
 	const [visitFound, setVisitFound] = useState<boolean>(false)
 	const [isSavedDb, setIsSaveDb] = useState<boolean>(false)
-	const router = useRouter()
 	const { id } = user$.getValue()
 	const {
 		register,
@@ -36,7 +41,7 @@ export default function CreateVisit() {
 		getValues,
 		setValue,
 		formState: { errors },
-	} = useForm()
+	} = useForm<InputsFrom>()
 
 	const typesDocuments = ['DNI', 'RUC', 'C.E']
 	const typesVehicles = [
@@ -57,41 +62,47 @@ export default function CreateVisit() {
 	const onSearchVisit = async () => {
 		const { documentType, documentNumber } = getValues()
 
-		try {
-			setIsLoadingSearch(true)
-			const { data } = await getByDocument(documentType, documentNumber)
+		setIsLoadingSearch(true)
+		const { data } = await getByDocument(documentType, documentNumber)
 
-			if (data?.length) {
-				setVisitId(data[0].id)
-				setValue('name', data[0].name)
-				setValue('surname', data[0].surname)
-				setVisitFound(true)
-				setIsSaveDb(true)
+		if (data?.length) {
+			setVisit(data[0])
+			setValue('name', data[0].name)
+			setValue('surname', data[0].surname)
+			setVisitFound(true)
+			setIsSaveDb(true)
+
+			setIsLoadingSearch(false)
+			setIsShowForm(true)
+			return
+		}
+
+		getDni(documentNumber).subscribe({
+			next: (value) => {
+				if (value?.success) {
+					setValue('name', value.nombres)
+					setValue('surname', `${value.apellidoPaterno} ${value.apellidoMaterno}`)
+					setVisitFound(true)
+				} else {
+					toast.error(value.message)
+				}
+			},
+
+			complete: () => {
+				setIsLoadingSearch(false)
+				setIsShowForm(true)
+			},
+		})
+	}
+
+	const onSubmitForm: SubmitHandler<InputsFrom> = async (entry) => {
+		try {
+			if (!areAllFieldsFilled({ documentNumber: entry.documentNumber, name: entry.name })) {
 				return
 			}
 
-			getDni(documentNumber).subscribe({
-				next: (value) => {
-					if (value?.success) {
-						setValue('name', value.nombres)
-						setValue('surname', `${value.apellidoPaterno} ${value.apellidoMaterno}`)
-						setVisitFound(true)
-					} else {
-						toast.error(value.message)
-					}
-				},
-			})
-		} catch (error) {
-			console.error(error)
-		} finally {
-			setIsLoadingSearch(false)
-			setIsShowForm(true)
-		}
-	}
-
-	const onSubmitForm = async (entry: DataTypesFrom | any) => {
-		try {
 			setIsLoading(true)
+			let visitId = null
 
 			if (!isSavedDb) {
 				const payloadVisit = {
@@ -102,19 +113,17 @@ export default function CreateVisit() {
 					documentNumber: convertToUpperCase(entry.documentNumber),
 				}
 
-				console.log({ payloadVisit })
-
 				const { data } = await createVisit(payloadVisit)
 
 				if (data?.length) {
-					setVisitId(data[0].id)
+					visitId = data[0].id
 				}
 			}
 
 			const payloadTrackingVisit = {
 				userId: id,
-				visitId: visitId,
-				dateTimeEntry: entry.input && dateCurrentUTC(),
+				visitId: visitId ?? visit?.id,
+				dateTimeEntry: dateCurrentUTC(),
 				dateTimeExit: null,
 				vehicleType: entry.vehicleType,
 				plateNumber: isEmptyString(entry.plateNumber)
@@ -125,7 +134,7 @@ export default function CreateVisit() {
 			await createVisitHistories(payloadTrackingVisit)
 
 			toast.success('Se ha registrado correctamente la visita')
-			router.push('/console/tracking-visits')
+			emitCloseModal()
 		} catch (error) {
 			console.error(error)
 		} finally {
@@ -164,7 +173,7 @@ export default function CreateVisit() {
 						)}
 						type='button'
 						onClick={onSearchVisit}
-						disabled={String(watch('documentNumber')).length <= 7}
+						disabled={watch('documentNumber').length >= 7}
 					>
 						Buscar
 					</button>
@@ -230,24 +239,6 @@ export default function CreateVisit() {
 										{...register('plateNumber')}
 									/>
 								</div>
-							</div>
-						</div>
-
-						<div className='cell'>
-							<div className='field'>
-								<label className='checkbox has-text-weight-bold'>
-									<input type='checkbox' {...register('input')} />
-									<span className='pl-1'>Entrada</span>
-								</label>
-							</div>
-						</div>
-
-						<div className='cell'>
-							<div className='field'>
-								<label className='checkbox has-text-weight-bold'>
-									<input type='checkbox' {...register('output')} disabled />
-									<span className='pl-1'>Salida</span>
-								</label>
 							</div>
 						</div>
 
