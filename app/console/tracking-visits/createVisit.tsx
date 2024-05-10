@@ -173,7 +173,6 @@ export default function CreateVisit({ emitCloseModal }: CreateVisitProps) {
 						)}
 						type='button'
 						onClick={onSearchVisit}
-						disabled={watch('documentNumber').length >= 7}
 					>
 						Buscar
 					</button>
