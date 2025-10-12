@@ -9,7 +9,7 @@ const menu = [
 			{
 				name: 'Seguimiento Visitas',
 				href: '/console/tracking-visits',
-				roles: ['ADMIN', 'VIGILANT'],
+				roles: ['SYS', 'ADMIN', 'SECURITY'],
 			},
 		],
 	},

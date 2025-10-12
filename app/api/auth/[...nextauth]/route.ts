@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { getRoleByEmailUser } from '@common/helpers';
 import { login } from '@/services/auth.service'
 
 const handler = NextAuth({
@@ -21,13 +22,21 @@ const handler = NextAuth({
 					throw new Error('Please enter both email and password.')
 				}
 
-				const { data, error } = await login(email, password)
+				const { data, error } = await login(email, password);
 
 				if (error?.message) {
 					throw new Error(error.message)
 				} else if (!data?.user) {
 					throw new Error('Invalid credentials')
 				}
+
+        const role = getRoleByEmailUser(String(data.user.email));
+
+        if (!role) {
+          throw new Error('Invalid role credentials');
+        }
+
+        data.user.role = role;
 
 				return data.user
 			},
