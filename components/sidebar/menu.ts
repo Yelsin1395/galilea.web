@@ -1,18 +1,26 @@
 const menu = [
-	// {
-	// 	label: 'Administración',
-	// 	children: [{ name: 'Moradores', href: '', roles: ['ADMIN'] }],
-	// },
-	{
-		label: 'Seguridad',
-		children: [
-			{
-				name: 'Seguimiento Visitas',
-				href: '/console/tracking-visits',
-				roles: ['SYS', 'ADMIN', 'SECURITY'],
-			},
-		],
-	},
+  {
+    label: 'Moradores',
+    enabled: true,
+    children: [
+      {
+        name: 'Propietarios',
+        href: '/console/owner',
+        roles: ['SYS', 'ADMIN']
+      }
+    ],
+  },
+  {
+    label: 'Seguridad',
+    enabled: true,
+    children: [
+      {
+        name: 'Seguimiento Visitas',
+        href: '/console/tracking-visits',
+        roles: ['SYS', 'ADMIN', 'SECURITY'],
+      },
+    ],
+  },
 ]
 
 export default menu

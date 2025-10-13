@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { getRoleByEmailUser } from '@common/helpers';
-import { login } from '@/services/auth.service'
+import { login } from '@services/auth.service'
 
 const handler = NextAuth({
 	secret: process.env.NEXTAUTH_SECRET,

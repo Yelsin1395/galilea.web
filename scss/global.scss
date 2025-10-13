@@ -5,3 +5,11 @@ $red: #d62739;
 @use 'bulma/sass' with (
 	$primary: $red
 );
+
+[data-theme='dark-va-hero'],
+.theme-va-hero {
+	.level {
+		background: #2a2a2a;
+		color: #ffffff;
+	}
+}
