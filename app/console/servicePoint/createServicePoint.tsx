@@ -1,11 +1,11 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import useSWRMutation from 'swr/mutation'
-import { DocumentType } from '@common/enums/documentType.enum'
-import { InputOwnerForm } from '@common/interfaces/inputOwnerForm.interface'
+import { CreateServicePointRequest } from '@common/interfaces/client/createServicePointRequest.interface'
+import { InputServicePointForm } from '@common/interfaces/inputServicePointForm.interface'
+import { ServicePointType } from '@common/enums/servicePointType.enum'
 import { cn } from '@/utils/merge'
-import { CreateOwnerRequest } from '@common/interfaces/client/createOwnerRequest.interface'
-import { areAllFieldsFilled } from '@/common/helpers'
+import { areAllFieldsFilled } from '@common/helpers'
 
 interface CreateVisitProps {
 	emitCloseModal: () => void
@@ -13,19 +13,21 @@ interface CreateVisitProps {
 	id?: string
 }
 
-const API_ENDPOINT = '/api/owner/create'
-const fetcher = (url: string, { arg }: { arg: CreateOwnerRequest }) =>
+const API_ENDPOINT = '/api/servicePoint/create'
+const fetcher = (url: string, { arg }: { arg: CreateServicePointRequest }) =>
 	fetch(url, { method: 'POST', body: JSON.stringify(arg) }).then((res) => res.json())
 
-export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitProps) {
+export default function CreateServicePoint({ emitCloseModal, isEdit, id }: CreateVisitProps) {
 	const { trigger, isMutating } = useSWRMutation(API_ENDPOINT, fetcher)
-	const { register, watch, handleSubmit } = useForm<InputOwnerForm>()
-	const documentTypesArray: DocumentType[] = Object.values(DocumentType)
+	const { register, handleSubmit, watch } = useForm<InputServicePointForm>({ mode: 'onChange' })
+	const servicePointTypeArray: ServicePointType[] = Object.values(ServicePointType)
 
-	const onSubmitForm: SubmitHandler<InputOwnerForm> = async (entry) => {
+	const onSubmitForm: SubmitHandler<InputServicePointForm> = async (entry) => {
+		entry.price = Number(entry.price)
+
 		const response = await trigger(entry)
 
-		if (response.status !== 201) {
+		if (response.status != 201) {
 			if (response.errorCode) {
 				toast.error(response.message)
 			} else {
@@ -43,10 +45,10 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 				<div className='grid'>
 					<div className='cell'>
 						<div className='field'>
-							<label className='label'>Tipo documento</label>
+							<label className='label'>Tipo punto de servicio</label>
 							<div className='select is-fullwidth'>
-								<select {...register('documentType')}>
-									{documentTypesArray.map((type, index) => (
+								<select {...register('type')}>
+									{servicePointTypeArray.map((type, index) => (
 										<option key={index} value={type}>
 											{type}
 										</option>
@@ -58,13 +60,14 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 
 					<div className='cell'>
 						<div className='field'>
-							<label className='label'>Número documento</label>
+							<label className='label'>Precio</label>
 							<div className='control'>
 								<input
 									className='input'
 									type='text'
-									placeholder='Ingrese número documento'
-									{...register('documentNumber')}
+									pattern='^\d*(\.\d{0,2})?'
+									placeholder='Ingrese precio'
+									{...register('price')}
 								/>
 							</div>
 						</div>
@@ -72,33 +75,19 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 
 					<div className='cell'>
 						<div className='field'>
-							<label className='label'>Manzana propiedad</label>
+							<label className='label'>Descripción</label>
 							<div className='control'>
 								<input
 									className='input'
 									type='text'
-									placeholder='Ingrese manzana'
-									{...register('propertyBlock')}
+									placeholder='Ingrese descripción'
+									{...register('description')}
 								/>
 							</div>
 						</div>
 					</div>
 
-					<div className='cell'>
-						<div className='field'>
-							<label className='label'>Lote propiedad</label>
-							<div className='control'>
-								<input
-									className='input'
-									type='text'
-									placeholder='Ingrese lote'
-									{...register('propertyLot')}
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div className='cell mt-4'>
+					<div className='cell is-col-span-2 mt-4'>
 						<div className='field'>
 							<button
 								className={cn('button is-success', isMutating && 'is-loading')}

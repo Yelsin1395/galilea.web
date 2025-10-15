@@ -59,6 +59,10 @@ export function convertToUpperCase(str: string): string {
 }
 
 export function areAllFieldsFilled(obj: any): boolean {
+  if (!Object.values(obj).length) {
+    return false
+  }
+
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (!obj[key]) {
@@ -66,6 +70,7 @@ export function areAllFieldsFilled(obj: any): boolean {
       }
     }
   }
+
   return true
 }
 

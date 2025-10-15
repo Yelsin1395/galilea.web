@@ -79,7 +79,7 @@ export default function Sidebar() {
 				</div>
 			</nav>
 
-			<div className={activeSidebar ? 'va-sidebar-menu is-active-sidebar-menu' : 'va-sidebar-menu'} data-theme='dark-va-aside'>
+			<div className={activeSidebar ? 'va-sidebar-menu is-active-sidebar-menu' : 'va-sidebar-menu'}>
 				<div className='va-close-sidebar'>
 					<button className='delete' onClick={() => setActiveSidebar(false)}></button>
 				</div>
@@ -100,32 +100,34 @@ export default function Sidebar() {
 					</ul>
 
 					{menu.map((m, index) => {
-            if (m.enabled) {
-              return (
-                <React.Fragment key={index}>
-                  <p className='menu-label'>{m.label}</p>
-                  <ul className='menu-list' key={index}>
-                    {m.children.map((c) => {
-                      const isActive = comparePathComplete(pathName, c.href)
-                      
-                      if (c.roles.includes(role)) {
-                        return (
-                          <li key={c.name} onClick={() => setActiveSidebar(false)}>
-                            <Link
-                              className={cn(isActive && 'has-background-primary-light has-text-weight-bold')}
-                              href={c.href}
-                            >
-                              {c.name}
-                            </Link>
-                          </li>
-                        )
-                      }
-                    })}
-                  </ul>
-						    </React.Fragment>
-              )
-            }
-          })}
+						if (m.enabled) {
+							return (
+								<React.Fragment key={index}>
+									<p className='menu-label'>{m.label}</p>
+									<ul className='menu-list' key={index}>
+										{m.children.map((c) => {
+											const isActive = comparePathComplete(pathName, c.href)
+
+											if (c.roles.includes(role)) {
+												return (
+													<li key={c.name} onClick={() => setActiveSidebar(false)}>
+														<Link
+															className={cn(
+																isActive && 'has-background-primary-light has-text-weight-bold'
+															)}
+															href={c.href}
+														>
+															{c.name}
+														</Link>
+													</li>
+												)
+											}
+										})}
+									</ul>
+								</React.Fragment>
+							)
+						}
+					})}
 
 					<p className='menu-label'>Acciones</p>
 					<button

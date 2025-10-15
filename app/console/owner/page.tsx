@@ -9,6 +9,7 @@ import { LuPencil } from 'react-icons/lu'
 import { FaTrashAlt } from 'react-icons/fa'
 import ModalCard from '@components/modalCard/modalCard'
 import CreateOwner from './createOwner'
+import { HeroGridMessage } from '@/components/hero/hero'
 
 const API_ENDPOINT = '/api/owner/list'
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -39,7 +40,7 @@ export default function Owners() {
 				<CreateOwner emitCloseModal={onCloseModalForm} isEdit={false} />
 			</ModalCard>
 
-			<section className='hero has-background-primary-light mb-4' data-theme='dark-va-hero'>
+			<section className='hero has-background-primary-light mb-4 hero-dark-theme'>
 				<nav className='level'>
 					<div className='level-left'>
 						<div className='level-item'>
@@ -65,7 +66,7 @@ export default function Owners() {
 			<div className='box'>
 				{isLoading ? (
 					<LoadingGrid />
-				) : (
+				) : data?.data.length ? (
 					<div className='table-container'>
 						<table className='table is-hoverable is-fullwidth'>
 							<thead>
@@ -104,6 +105,8 @@ export default function Owners() {
 							</tbody>
 						</table>
 					</div>
+				) : (
+					<HeroGridMessage description='Se requiere creación de propietarios' />
 				)}
 			</div>
 		</section>

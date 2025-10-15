@@ -6,10 +6,19 @@ $red: #d62739;
 	$primary: $red
 );
 
-[data-theme='dark-va-hero'],
-.theme-va-hero {
-	.level {
-		background: #2a2a2a;
-		color: #ffffff;
+@media (prefers-color-scheme: dark) {
+	.hero-dark-theme {
+		background-color: #2a2a2a !important;
+
+		.title,
+		.subtitle,
+		.button {
+			color: #ffffff;
+		}
+
+		.button {
+			background-color: rgba(255, 255, 255, 0.1);
+			border-color: rgba(255, 255, 255, 0.2);
+		}
 	}
 }

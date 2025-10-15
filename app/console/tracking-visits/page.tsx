@@ -111,7 +111,7 @@ export default function Visits() {
 				<CreateVisit emitCloseModal={onCloseModalForm} />
 			</ModalCard>
 
-			<section className='hero has-background-primary-light mb-4' data-theme='dark-va-hero'>
+			<section className='hero has-background-primary-light mb-4 hero-dark-theme'>
 				<nav className='level'>
 					<div className='level-left'>
 						<div className='level-item'>
