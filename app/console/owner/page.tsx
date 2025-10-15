@@ -10,12 +10,14 @@ import { FaTrashAlt } from 'react-icons/fa'
 import ModalCard from '@components/modalCard/modalCard'
 import CreateOwner from './createOwner'
 import { HeroGridMessage } from '@/components/hero/hero'
+import AssignServicePointPayment from './assignServicePointPayment'
 
 const API_ENDPOINT = '/api/owner/list'
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function Owners() {
 	const [showModal, setShowModal] = useState<boolean>(false)
+	const [activeOwnerAssignId, setActiveOwnerAssignId] = useState<string | null>(null)
 
 	const { data, isLoading, mutate } = useSwr(API_ENDPOINT, fetcher, {
 		revalidateOnFocus: false,
@@ -29,6 +31,16 @@ export default function Owners() {
 		setShowModal(false)
 		mutate()
 	}
+
+	const openModalAssignSp = (ownerId: string) => {
+		setActiveOwnerAssignId(ownerId)
+	}
+
+	const onCloseModalAssignSp = () => {
+		setActiveOwnerAssignId(null)
+	}
+
+	console.log({ data })
 
 	return (
 		<section className='section'>
@@ -87,7 +99,10 @@ export default function Owners() {
 										<td>{datetime(o.createdAt)}</td>
 										<td>
 											<div className='buttons'>
-												<button className='button is-small is-info' disabled>
+												<button
+													className='button is-small is-info'
+													onClick={() => openModalAssignSp(o._id)}
+												>
 													<FaInfo />
 												</button>
 
@@ -109,6 +124,25 @@ export default function Owners() {
 					<HeroGridMessage description='Se requiere creación de propietarios' />
 				)}
 			</div>
+
+			{data?.data.length &&
+				data.data.map((o: any, i: any) => (
+					<ModalCard
+						key={`info-modal-${o._id}`}
+						title='Asignar punto de servicio'
+						isActive={activeOwnerAssignId === o._id}
+						onClose={() => setActiveOwnerAssignId(null)}
+					>
+						<AssignServicePointPayment
+							emitCloseModal={onCloseModalAssignSp}
+							ownerId={o._id}
+							firstName={o.firstName}
+							lastName={o.lastName}
+							propertyBlock={o.propertyBlock}
+							propertyLot={o.propertyLot}
+						/>
+					</ModalCard>
+				))}
 		</section>
 	)
 }
