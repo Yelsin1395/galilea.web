@@ -27,7 +27,7 @@ const menu = [
 		children: [
 			{
 				name: 'Seguimiento Visitas',
-				href: '/console/tracking-visits',
+				href: '/console/visit',
 				roles: ['SYS', 'ADMIN', 'SECURITY'],
 			},
 		],

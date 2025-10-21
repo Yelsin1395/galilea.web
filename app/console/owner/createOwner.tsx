@@ -24,7 +24,7 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 
 	const onSubmitForm: SubmitHandler<InputOwnerForm> = async (entry) => {
 		const response = await trigger(entry)
-    console.log({response})
+
 		if (response.status !== 201) {
 			if (response.errorCode) {
 				toast.error(response.message)
@@ -73,14 +73,6 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 					<div className='cell'>
 						<div className='field'>
 							<label className='label'>Número telefono</label>
-							{/* <div className='control'>
-								<input
-									className='input'
-									type='text'
-									placeholder='Ingrese número de teléfono'
-									{...register('phoneNumber')}
-								/>
-							</div> */}
 							<div className='field has-addons'>
 								<p className='control'>
 									<a className='button is-static'>+51</a>

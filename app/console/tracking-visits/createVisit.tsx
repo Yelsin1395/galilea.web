@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { user$ } from '@/store/auth.store'
-import { getByDocument, create as createVisit, Visit } from '@/services/visit.service'
+import { getByDocument, create as createVisit, Visit } from '@/services/visitSupabase.service'
 import { create as createVisitHistories } from '@/services/visitHistories.service'
 import { getDni } from '@/services/apisperu.service'
 import {
