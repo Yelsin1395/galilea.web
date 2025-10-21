@@ -34,9 +34,9 @@ export function time(inputDate: string): string {
 	return dateUTC.toLocaleString('es-PE', options)
 }
 
-export function datetime(inputDate: string): string | null {
+export function datetime(inputDate: string): string {
 	if (!inputDate) {
-		return null
+		return ''
 	}
 
 	const dateUTC: Date = new Date(inputDate)
