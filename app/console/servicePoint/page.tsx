@@ -109,7 +109,7 @@ export default function ServicePoints() {
 						</div>
 					</div>
 				) : (
-					<HeroGridMessage description='Se requiere creación de punto de servicio' />
+					<HeroGridMessage description='Se requiere creación de punto de servicio' isRedirect={false} />
 				)}
 			</div>
 		</section>
