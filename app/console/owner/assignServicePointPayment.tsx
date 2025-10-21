@@ -142,7 +142,7 @@ export default function AssignServicePointPayment({
 					<div className='cell mt-4'>
 						<div className='field'>
 							<button className={cn('button is-success', isMutating && 'is-loading')} type='submit'>
-								Guardar
+								Asignar
 							</button>
 						</div>
 					</div>

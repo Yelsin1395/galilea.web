@@ -3,7 +3,7 @@ import { CiFolderOn } from 'react-icons/ci'
 
 interface HeroGridProps {
 	description: string
-	isRedirect?: boolean
+	isRedirect: boolean
 	hrefRedirect?: string
 	redirectName?: string
 }

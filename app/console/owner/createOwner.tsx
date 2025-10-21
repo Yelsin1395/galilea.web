@@ -24,7 +24,7 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 
 	const onSubmitForm: SubmitHandler<InputOwnerForm> = async (entry) => {
 		const response = await trigger(entry)
-
+    console.log({response})
 		if (response.status !== 201) {
 			if (response.errorCode) {
 				toast.error(response.message)
@@ -72,6 +72,33 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 
 					<div className='cell'>
 						<div className='field'>
+							<label className='label'>Número telefono</label>
+							{/* <div className='control'>
+								<input
+									className='input'
+									type='text'
+									placeholder='Ingrese número de teléfono'
+									{...register('phoneNumber')}
+								/>
+							</div> */}
+							<div className='field has-addons'>
+								<p className='control'>
+									<a className='button is-static'>+51</a>
+								</p>
+								<p className='control is-expanded'>
+									<input
+										className='input'
+										type='tel'
+										placeholder='Ingrese número de teléfono'
+										{...register('phoneNumber')}
+									/>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className='cell'>
+						<div className='field'>
 							<label className='label'>Manzana propiedad</label>
 							<div className='control'>
 								<input
@@ -98,7 +125,7 @@ export default function CreateOwner({ emitCloseModal, isEdit, id }: CreateVisitP
 						</div>
 					</div>
 
-					<div className='cell mt-4'>
+					<div className='cell is-col-span-2 mt-4'>
 						<div className='field'>
 							<button
 								className={cn('button is-success', isMutating && 'is-loading')}

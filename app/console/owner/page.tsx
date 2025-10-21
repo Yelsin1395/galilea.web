@@ -4,13 +4,13 @@ import { useState } from 'react'
 import useSwr from 'swr'
 import { datetime } from '@common/helpers'
 import { LoadingGrid } from '@/components/loading/loading'
-import { FaInfo } from 'react-icons/fa6'
-import { LuPencil } from 'react-icons/lu'
-import { FaTrashAlt } from 'react-icons/fa'
+import { FaRegEye } from 'react-icons/fa6'
 import ModalCard from '@components/modalCard/modalCard'
 import CreateOwner from './createOwner'
 import { HeroGridMessage } from '@/components/hero/hero'
 import AssignServicePointPayment from './assignServicePointPayment'
+import { FiUserCheck } from 'react-icons/fi'
+import ListServicePointPayment from './listServicePointPayment'
 
 const API_ENDPOINT = '/api/owner/list'
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -18,6 +18,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json())
 export default function Owners() {
 	const [showModal, setShowModal] = useState<boolean>(false)
 	const [activeOwnerAssignId, setActiveOwnerAssignId] = useState<string | null>(null)
+	const [activeOwnerTracking, setActiveOwnerTracking] = useState<string | null>(null)
 
 	const { data, isLoading, mutate } = useSwr(API_ENDPOINT, fetcher, {
 		revalidateOnFocus: false,
@@ -40,7 +41,13 @@ export default function Owners() {
 		setActiveOwnerAssignId(null)
 	}
 
-	console.log({ data })
+	const openModalTrackingSpp = (ownerId: string) => {
+		setActiveOwnerTracking(ownerId)
+	}
+
+	const onCloseModalTranckinSpp = () => {
+		setActiveOwnerTracking(null)
+	}
 
 	return (
 		<section className='section'>
@@ -103,16 +110,19 @@ export default function Owners() {
 													className='button is-small is-info'
 													onClick={() => openModalAssignSp(o._id)}
 												>
-													<FaInfo />
+													<FiUserCheck />
 												</button>
 
-												<button className='button is-small is-warning' disabled>
-													<LuPencil />
+												<button
+													className='button is-small is-link'
+													onClick={() => openModalTrackingSpp(o._id)}
+												>
+													<FaRegEye />
 												</button>
 
-												<button className='button is-small is-danger' disabled>
+												{/* <button className='button is-small is-danger' disabled>
 													<FaTrashAlt />
-												</button>
+												</button> */}
 											</div>
 										</td>
 									</tr>
@@ -121,7 +131,7 @@ export default function Owners() {
 						</table>
 					</div>
 				) : (
-					<HeroGridMessage description='Se requiere creación de propietarios' />
+					<HeroGridMessage description='Se requiere creación de propietarios' isRedirect={false} />
 				)}
 			</div>
 
@@ -141,6 +151,18 @@ export default function Owners() {
 							propertyBlock={o.propertyBlock}
 							propertyLot={o.propertyLot}
 						/>
+					</ModalCard>
+				))}
+
+			{data?.data.length &&
+				data.data.map((o: any, i: any) => (
+					<ModalCard
+						key={`info-modal-${o._id}`}
+						title={`Puntos de servicios de ${o.propertyBlock} ${o.propertyLot}`}
+						isActive={activeOwnerTracking === o._id}
+						onClose={() => setActiveOwnerTracking(null)}
+					>
+						<ListServicePointPayment emitCloseModal={onCloseModalTranckinSpp} ownerId={o._id} />
 					</ModalCard>
 				))}
 		</section>
